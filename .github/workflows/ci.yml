@@ -1,0 +1,12 @@
+name: FAKE CI Tests
+on:
+  push:
+  workflow_dispatch:
+env:
+jobs:
+  backend-checks:
+    name: Backend checks
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo "Teste"
