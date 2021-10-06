@@ -2,7 +2,6 @@ name: FAKE CI Tests
 on:
   push:
   workflow_dispatch:
-env:
 jobs:
   backend-checks:
     name: Backend checks
