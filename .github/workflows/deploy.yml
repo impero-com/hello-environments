@@ -19,7 +19,7 @@ jobs:
       - run: echo GITHUB_BRANCH="${GITHUB_REF##refs/heads/}" >> $GITHUB_ENV
 
       - id: extractenvironment
-       run: |
+        run: |
          if [[ $GITHUB_BRANCH == 'master' ]]; then
            echo "::set-output name=environment::production"
          else
