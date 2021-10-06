@@ -9,26 +9,32 @@ on:
   workflow_dispatch:
   repository_dispatch:
 jobs:
-  init:
-    name: Set environment variable based on branch
+  get-environment-name:
+    name: Get environment based on branch
     if: github.event_name != 'workflow_run' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-20.04
+    outputs:
+      environment: ${{ steps.extractenvironment.outputs.environment }}
     steps:
+     - id: extractenvironment
      - run: |
-         if [[ env.GITHUB_BRANCH == 'master' ]]; then
-           echo "ENVIRONMENT=production" >> $GITHUB_ENV
+         if [[ ${GITHUB_REF#refs/heads/} == 'master' ]]; then
+           echo "::set-output name=environment::production"
          else
            echo "NO GO"
          fi
   deploy:
     name: Deploy
-    runs-on: ubuntu-20.04
     if: github.event_name != 'workflow_run' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    needs:
+      - get-environment-name
+    runs-on: ubuntu-20.04
+    environment: ${{ needs.get-environment-name.outputs.environment }}
     env:
       ENV: ${{ secrets.ENV }}
     steps:
       - uses: actions/checkout@v2
       - run: |
-          if [[ ${{ secrets.ENV }} == 'staging' ]]; then
-            echo "It's *** indeed"
+          if [[ ${{ env.ENV }} == 'production' ]]; then
+            echo "It's prod indeed"
           fi
