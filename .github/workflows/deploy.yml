@@ -16,12 +16,14 @@ jobs:
     outputs:
       environment: ${{ steps.extractenvironment.outputs.environment }}
     steps:
-     - id: extractenvironment
+      run: echo GITHUB_BRANCH="${GITHUB_REF##refs/heads/}" >> $GITHUB_ENV
+
+      - id: extractenvironment
        run: |
-         if [[ ${GITHUB_REF#refs/heads/} == 'master' ]]; then
+         if [[ $GITHUB_BRANCH == 'master' ]]; then
            echo "::set-output name=environment::production"
          else
-           echo "NO GO"
+           echo "This workflow is probably running in a wrong branch"
          fi
   deploy:
     name: Deploy
