@@ -16,7 +16,7 @@ jobs:
     outputs:
       environment: ${{ steps.extractenvironment.outputs.environment }}
     steps:
-      run: echo GITHUB_BRANCH="${GITHUB_REF##refs/heads/}" >> $GITHUB_ENV
+      - run: echo GITHUB_BRANCH="${GITHUB_REF##refs/heads/}" >> $GITHUB_ENV
 
       - id: extractenvironment
        run: |
