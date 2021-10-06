@@ -42,7 +42,7 @@ jobs:
           if [[ $ENV == 'production' ]]; then
             echo "It's prod indeed"
           elif [[ $ENV == 'staging' ]]; then
-            echo "It's staging"
+            echo "It's staging indeed"
           else
             echo "ENV environment variable was not properly setted"
           fi
