@@ -5,7 +5,7 @@ on:
       - "FAKE CI Tests"
     types:
       - completed
-    branches: [ master ]
+    branches: [ master, staging ]
   workflow_dispatch:
   repository_dispatch:
 jobs:
@@ -22,6 +22,8 @@ jobs:
         run: |
          if [[ $GITHUB_BRANCH == 'master' ]]; then
            echo "::set-output name=environment::production"
+         elif [[ $GITHUB_BRANCH == 'staging' ]]; then
+           echo "::set-output name=environment::staging"
          else
            echo "This workflow is probably running in a wrong branch"
          fi
@@ -37,6 +39,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          if [[ ${{ env.ENV }} == 'production' ]]; then
+          if [[ $ENV == 'production' ]]; then
             echo "It's prod indeed"
+          elif [[ $ENV == 'staging' ]]; then
+            echo "It's staging"
+          else
+            echo "ENV environment variable was not properly setted"
           fi
